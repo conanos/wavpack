@@ -83,6 +83,8 @@ class WavpackConan(ConanFile):
                 "@PACKAGE_VERSION@" : self.version,
                 "@LIBM@"            : ""
             }
+            if self.options.shared:
+                replacements.update({'-lwavpack':'-lwavpackdll'})
             for s, r in replacements.items():
                 tools.replace_in_file(os.path.join(self.package_folder,"lib","pkgconfig", "wavpack.pc"),s,r)
 
