@@ -69,6 +69,20 @@ class WavpackConan(ConanFile):
                 self.copy("libwavpack.*", dst=os.path.join(self.package_folder,"lib"),
                           src=os.path.join(self.build_folder,self._source_subfolder,output_rpath))
 
+            tools.mkdir(os.path.join(self.package_folder,"lib","pkgconfig"))
+            shutil.copyfile(os.path.join(self.build_folder,self._source_subfolder,"wavpack.pc.in"),
+                            os.path.join(self.package_folder,"lib","pkgconfig", "wavpack.pc"))
+            replacements = {
+                "@prefix@"          : self.package_folder,
+                "@exec_prefix@"     : "${prefix}/bin",
+                "@libdir@"          : "${prefix}/lib",
+                "@includedir@"      : "${prefix}/include",
+                "@PACKAGE_VERSION@" : self.version,
+                "@LIBM@"            : ""
+            }
+            for s, r in replacements.items():
+                tools.replace_in_file(os.path.join(self.package_folder,"lib","pkgconfig", "wavpack.pc"),s,r)
+
         #if tools.os_info.is_linux:
         #    with tools.chdir(self.source_subfolder):
         #        self.copy("*", src="%s/builddir"%(os.getcwd()))
