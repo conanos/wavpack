@@ -69,6 +69,9 @@ class WavpackConan(ConanFile):
                 self.copy("libwavpack.*", dst=os.path.join(self.package_folder,"lib"),
                           src=os.path.join(self.build_folder,self._source_subfolder,output_rpath))
 
+            self.copy("wavpack.h", dst=os.path.join(self.package_folder,"include", "wavpack"),
+                      src=os.path.join(self.build_folder,self._source_subfolder,"include"))
+
             tools.mkdir(os.path.join(self.package_folder,"lib","pkgconfig"))
             shutil.copyfile(os.path.join(self.build_folder,self._source_subfolder,"wavpack.pc.in"),
                             os.path.join(self.package_folder,"lib","pkgconfig", "wavpack.pc"))
